@@ -1,19 +1,16 @@
-//commit
-//commit
+// ✅ التعديل الصح للـ Validation Middleware:
 export const validation = (schema) => {
   return (req, res, next) => {
-    let inputs = { ...req.body, ...req.params, ...req.query };
-    let { error } = schema.validate(inputs, { abortEarly: false });
+    // دمج req.file أو req.files مع req.body للتحقق منهم لو Schema فيها صورة
+    const filterData = { ...req.body };
+    if (req.file) filterData.image = req.file;
+    if (req.files) filterData.files = req.files;
 
+    const { error } = schema.validate(filterData, { abortEarly: false });
     if (error) {
-      let errors = error.details.map((err) => err.message);
-      res.status(400).json({
-        status: 'fail',
-        message: `${errors}`,
-        data: { errors: errors },
-      });
-    } else {
-      next();
+      const message = error.details.map((detail) => detail.message).join(', ');
+      return next(new AppErr(message, 400));
     }
+    next();
   };
 };
