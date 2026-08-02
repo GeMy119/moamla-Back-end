@@ -87,9 +87,7 @@ export const updateVisitSchema = Joi.object({
     nationality: Joi.string().min(2).max(50),
     placeOfIssue: Joi.string().min(2).max(100),
     entryType: Joi.string().min(2).max(50),
-    image_url: Joi.forbidden().messages({
-        "any.unknown": "رابط الصورة يُحدَّد تلقائياً من الملف المرفوع",
-    }),
+    image_url: Joi.object().required().unknown(), // يقبل الـ Multer File Object
     lastSearchedAt: Joi.date().optional().allow(null),
     image_public_id: Joi.string().optional()
 }).min(1).messages({

@@ -1,16 +1,16 @@
-// ✅ التعديل الصح للـ Validation Middleware:
 export const validation = (schema) => {
   return (req, res, next) => {
-    // دمج req.file أو req.files مع req.body للتحقق منهم لو Schema فيها صورة
-    const filterData = { ...req.body };
-    if (req.file) filterData.image = req.file;
-    if (req.files) filterData.files = req.files;
+    const inputs = { ...req.body };
+    if (req.file) inputs.image = req.file;
 
-    const { error } = schema.validate(filterData, { abortEarly: false });
+    const { error } = schema.validate(inputs, { abortEarly: false });
+
     if (error) {
-      const message = error.details.map((detail) => detail.message).join(', ');
-      return next(new AppErr(message, 400));
+      const errorMessages = error.details.map((detail) => detail.message);
+      // إرجاع 400 Bad Request بدل ما يضرب 500
+      return next(new AppErr(errorMessages.join(', '), 400));
     }
+
     next();
   };
 };
