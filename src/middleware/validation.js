@@ -1,16 +1,17 @@
 export const validation = (schema) => {
   return (req, res, next) => {
-    const inputs = { ...req.body };
-    if (req.file) inputs.image = req.file;
-
-    const { error } = schema.validate(inputs, { abortEarly: false });
+    let inputs = { ...req.body, ...req.params, ...req.query };
+    let { error } = schema.validate(inputs, { abortEarly: false });
 
     if (error) {
-      const errorMessages = error.details.map((detail) => detail.message);
-      // إرجاع 400 Bad Request بدل ما يضرب 500
-      return next(new AppErr(errorMessages.join(', '), 400));
+      let errors = error.details.map((err) => err.message);
+      res.status(400).json({
+        status: 'fail',
+        message: `${errors}`,
+        data: { errors: errors },
+      });
+    } else {
+      next();
     }
-
-    next();
   };
 };

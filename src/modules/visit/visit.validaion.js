@@ -65,7 +65,6 @@ export const createVisitSchema = Joi.object({
         "any.required": "عدد مرات الدخول مطلوب",
     }),
 
-    // image_url بتتولد من رفع الملف في الكنترولر مش من اليوزر
     image_url: Joi.forbidden().messages({
         "any.unknown": "رابط الصورة يُحدَّد تلقائياً من الملف المرفوع",
     }),
@@ -87,7 +86,7 @@ export const updateVisitSchema = Joi.object({
     nationality: Joi.string().min(2).max(50),
     placeOfIssue: Joi.string().min(2).max(100),
     entryType: Joi.string().min(2).max(50),
-    image_url: Joi.object().required().unknown(), // يقبل الـ Multer File Object
+    image_url: Joi.optional().allow('', null),
     lastSearchedAt: Joi.date().optional().allow(null),
     image_public_id: Joi.string().optional()
 }).min(1).messages({
