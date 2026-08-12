@@ -98,11 +98,14 @@ export const getWorkersByEmployer = asyncHandler(async (req, res, next) => {
     }
     const employer = await Employer.findOne({ identity_number });
     if (!employer) {
-        return next(new AppErr("صاحب العمل غير موجود", 404));
+        return next(new AppErr("بيانات الادخال غير صحيحة", 404));
     }
 
     const worker = await Worker.findOne({ employer_id: employer._id, source_number })
-
+    console.log(worker)
+    if (!worker) {
+        return next(new AppErr("بيانات الادخال غير صحيحة", 404));
+    }
     res.status(200).json({
         success: true,
         employer: {
@@ -206,7 +209,7 @@ export const getAlert = asyncHandler(async (req, res, next) => {
         return next(new AppErr("رقم الهوية ورقم الصادر مطلوبان", 400));
 
     const employer = await Employer.findOne({ identity_number });
-    if (!employer) return next(new AppErr("الكفيل غير موجود", 404));
+    if (!employer) return next(new AppErr("بيانات الادخال غير صحيحة", 404));
 
     const worker = await Worker.findOne({
         employer_id: employer._id,
@@ -298,7 +301,7 @@ export const getProfessionChange = asyncHandler(async (req, res, next) => {
     }
 
     const employer = await Employer.findOne({ identity_number });
-    if (!employer) return next(new AppErr("الكفيل غير موجود", 404));
+    if (!employer) return next(new AppErr("بيانات الادخال غير صحيحة", 404));
     const worker = await Worker.findOne({
         employer_id: employer._id,
         "profession_changes.source_number": source_number
@@ -462,7 +465,7 @@ export const getMoamlaTypeBySourceNumber = asyncHandler(async (req, res, next) =
     }
 
     const employer = await Employer.findOne({ identity_number });
-    if (!employer) return next(new AppErr("الكفيل غير موجود", 404));
+    if (!employer) return next(new AppErr("بيانات الادخال غير صحيحة", 404));
 
     const worker = await Worker.findOne({
         employer_id: employer._id,

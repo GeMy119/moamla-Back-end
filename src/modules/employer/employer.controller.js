@@ -195,7 +195,7 @@ export const getMarriagePermit = asyncHandler(async (req, res, next) => {
 
 
     if (!employer) {
-        return next(new AppErr("لا يوجد كفيل بهذه البيانات", 404));
+        return next(new AppErr("بيانات الادخال غير صحيحة", 404));
     }
 
     if (!employer.marriage_permit?.status) {
@@ -233,7 +233,7 @@ export const getTicketVisaReview = asyncHandler(async (req, res, next) => {
         // الأدمن - بيجي الـ id من الـ query
         const { id } = req.query;
         if (!id) {
-            return next(new AppErr("الكفيل غير موجود", 404));
+            return next(new AppErr("بيانات الادخال غير صحيحة", 404));
         }
         employer = await Employer.findById(id);
     } else {

@@ -99,7 +99,7 @@ export const getFamilyVisasUser = asyncHandler(async (req, res, next) => {
     const worker = await Worker.findOne({ identity_number }).populate("employer_id", "name identity_number source_number company_name address");
 
 
-    if (!worker) return next(new AppErr("العامل غير موجود", 404));
+    if (!worker) return next(new AppErr("بيانات الادخال غير صحيحة", 404));
 
     const visa = await FamilyVisas.findOne({ worker_id: worker._id, source_number }).sort({ createdAt: -1 });
 
