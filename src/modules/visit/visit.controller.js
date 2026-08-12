@@ -91,14 +91,12 @@ export const searchVisitUser = asyncHandler(async (req, res, next) => {
     const { visaNo, source_number } = req.query;
     if (!visaNo || !source_number)
         return next(new AppErr("رقم التأشيرة ومصدرها مطلوبان", 400));
-    const visit = await Visit.findOneAndUpdate(
-        { visaNo, source_number },
-        {
-            $set: { lastSearchedAt: new Date() } // تحديث التاريخ والوقت الحالي
-        },
-        { new: true } // لإرجاع البيانات بعد التحديث مباشرةً
+    const visit = await Visit.findOne(
+        { visaNo, source_number }
     );
     if (!visit) return next(new AppErr("لا يوجد تأشيرة بهذه البيانات", 404));
+    visit.lastSearchedAt = new Date(); // تحديث التاريخ والوقت الحالي
+    await visit.save(); // حفظ التغييرات في قاعدة البيانات
     res.status(200).json({ success: true, data: visit });
 });
 

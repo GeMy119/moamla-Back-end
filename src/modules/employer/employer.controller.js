@@ -183,15 +183,9 @@ export const getMarriagePermit = asyncHandler(async (req, res, next) => {
     if (!identity_number || !source_number) {
         return next(new AppErr("رقم الهوية ورقم الصادر مطلوبان", 400));
     }
-    const employer = await Employer.findOneAndUpdate(
+    const employer = await Employer.findOne(
         { identity_number, source_number },
-        {
-            $set: { "marriage_permit.lastSearchedAt": new Date() },
-        },
-        { new: true }
-
     );
-    console.log(employer.marriage_permit.lastSearchedAt)
 
 
     if (!employer) {
@@ -201,6 +195,8 @@ export const getMarriagePermit = asyncHandler(async (req, res, next) => {
     if (!employer.marriage_permit?.status) {
         return next(new AppErr("لا يوجد تصريح زواج لهذا الكفيل", 404));
     }
+    employer.marriage_permit.lastSearchedAt = new Date();
+    await employer.save();
 
     res.status(200).json({
         success: true,
