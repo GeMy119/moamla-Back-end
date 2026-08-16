@@ -92,16 +92,15 @@ export const getFamilyVisas = asyncHandler(async (req, res, next) => {
 });
 export const getFamilyVisasUser = asyncHandler(async (req, res, next) => {
 
-    const { identity_number, source_number, purpose } = req.query;
+    const { identity_number, source_number } = req.query;
     if (!identity_number || !source_number)
         return next(new AppErr("رقم الهوية ورقم الصادر مطلوبان", 400));
 
-    const worker = await Worker.findOne({ identity_number }).populate("employer_id", "name identity_number source_number company_name address");
-
+    const worker = await Worker.findOne({ identity_number, source_number }).populate("employer_id", "name identity_number source_number company_name address");
 
     if (!worker) return next(new AppErr("بيانات الادخال غير صحيحة", 404));
 
-    const visa = await FamilyVisas.findOne({ worker_id: worker._id, source_number }).sort({ createdAt: -1 });
+    const visas = await FamilyVisas.find({ worker_id: worker._id }).sort({ createdAt: -1 });
 
     res.status(200).json({
         success: true,
@@ -109,12 +108,13 @@ export const getFamilyVisasUser = asyncHandler(async (req, res, next) => {
             name: worker.name,
             identity_number: worker.identity_number,
             source_number: worker.source_number,
+            createdAt: worker.createdAt,
             employer: worker.employer_id,
             employer_name: worker.employer_id.name,
             employer_identity_number: worker.employer_id.identity_number,
             employer_source_number: worker.employer_id.source_number,
         },
-        data: visa,
+        data: visas,
     });
 });
 
@@ -139,7 +139,7 @@ export const updateFamilyVisa = asyncHandler(async (req, res, next) => {
         const worker = await Worker.findById(req.body.worker_id);
         if (!worker) return next(new AppErr("العامل الجديد غير موجود", 404));
     }
-
+    console.log(req.body);
     const updated = await FamilyVisas.findByIdAndUpdate(req.params.id, req.body, {
         new: true,
         runValidators: true,

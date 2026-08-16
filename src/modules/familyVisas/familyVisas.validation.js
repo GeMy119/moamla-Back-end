@@ -63,6 +63,10 @@ export const updateFamilyVisaSchema = Joi.object({
         "string.hex": "worker_id غير صحيح",
         "string.length": "worker_id غير صحيح",
     }),
+    id: Joi.string().hex().length(24).messages({
+        "string.hex": "id غير صحيح",
+        "string.length": "id غير صحيح",
+    }),
 
     visitor_name: Joi.string().min(3).max(100),
 
@@ -82,7 +86,8 @@ export const updateFamilyVisaSchema = Joi.object({
 
     status: Joi.string().min(2).max(50),
 
-    releaseDate: Joi.string()
+    releaseDate: Joi.string(),
+    age: Joi.number()
 }).min(1).messages({
     "object.min": "يجب إرسال حقل واحد على الأقل للتحديث",
 });
