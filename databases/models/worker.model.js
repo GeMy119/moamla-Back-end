@@ -14,6 +14,7 @@ const workerSchema = new mongoose.Schema(
         iqama_expiry_date: { type: String, required: true }, // تاريخ انتهاء الإقامة 2023-12-31
         iqama_status: { type: String, required: true }, // حالة الإقامة
         iqama_issue_date: { type: String, required: true }, // تاريخ إصدار الإقامة 2023-01-01
+        acceptedDate: { type: String, required: true },
         alerts:
         {
             type: { type: String, enum: ["الغاء بلاغ", "بلاغ تغيب"] },

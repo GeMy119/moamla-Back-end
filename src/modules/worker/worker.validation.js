@@ -42,6 +42,9 @@ export const createWorkerSchema = Joi.object({
     iqama_issue_date: Joi.string().required().messages({
         "any.required": "تاريخ إصدار الإقامة مطلوب",
     }),
+    acceptedDate: Joi.string().required().messages({
+        "any.required": "تاريخ إصدار الإقامة مطلوب",
+    }),
     moamla_type: Joi.array().items(moamla).optional(),
     id: Joi.string().optional(), // من params لو موجود
 });
@@ -58,6 +61,7 @@ export const updateWorkerSchema = Joi.object({
     iqama_expiry_date: Joi.string().optional(),
     iqama_status: Joi.string().optional(),
     iqama_issue_date: Joi.string().optional(),
+    acceptedDate: Joi.string().optional(),
     id: Joi.string().optional(),
 }).min(1).messages({
     "object.min": "يجب إرسال حقل واحد على الأقل للتحديث",
