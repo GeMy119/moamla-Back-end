@@ -108,7 +108,7 @@ export const getFamilyVisasUser = asyncHandler(async (req, res, next) => {
             name: worker.name,
             identity_number: worker.identity_number,
             source_number: worker.source_number,
-            createdAt: worker.createdAt,
+            acceptedDate: worker.acceptedDate,
             employer: worker.employer_id,
             employer_name: worker.employer_id.name,
             employer_identity_number: worker.employer_id.identity_number,
