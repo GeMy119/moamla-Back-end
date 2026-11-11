@@ -17,7 +17,7 @@ export const createEmployer = asyncHandler(async (req, res, next) => {
 
     delete req.body.source_number;
 
-    const source_number = await generateUniqueSourceNumber(Employer, { length: 10, prefix: "" });
+    const source_number = await generateUniqueSourceNumber(Employer, { length: 8 });
 
     const employer = await Employer.create({ ...req.body, source_number });
 

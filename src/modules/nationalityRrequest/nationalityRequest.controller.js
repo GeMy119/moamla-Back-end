@@ -24,7 +24,7 @@ import cloudinary from "../../utils/cloudinary.js";
 // });
 export const createNationalityRequest = asyncHandler(async (req, res, next) => {
     if (!req.file) return next(new AppErr("صورة الطلب مطلوبة", 400));
-    const source_number = await generateUniqueSourceNumber(NationalityRequest, { length: 10 })
+    const source_number = await generateUniqueSourceNumber(NationalityRequest, { length: 8 })
 
     const result = await uploadToCloudinary(req.file.buffer, req.uploadFolder);
 

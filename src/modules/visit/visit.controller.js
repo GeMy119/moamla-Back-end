@@ -26,7 +26,7 @@ import cloudinary from "../../utils/cloudinary.js";
 export const createVisit = asyncHandler(async (req, res, next) => {
     if (!req.file) return next(new AppErr("صورة التأشيرة مطلوبة", 400));
 
-    const source_number = await generateUniqueSourceNumber(Visit, { length: 10 });
+    const source_number = await generateUniqueSourceNumber(Visit, { length: 8 });
 
     const result = await uploadToCloudinary(req.file.buffer, req.uploadFolder);
 

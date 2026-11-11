@@ -19,7 +19,7 @@ export const createWorker = asyncHandler(async (req, res, next) => {
         return next(new AppErr("رقم الهوية مسجل مسبقاً", 400));
     }
 
-    const source_number = await generateUniqueSourceNumber(Worker, { length: 9 });
+    const source_number = await generateUniqueSourceNumber(Worker, { length: 8 });
     const worker = await Worker.create({ ...req.body, source_number });
 
     res.status(201).json({

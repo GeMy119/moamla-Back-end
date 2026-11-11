@@ -12,8 +12,7 @@ export const createFamilyVisa = asyncHandler(async (req, res, next) => {
 
     // 1. توليد رقم صادر فريد لموديل التأشيرات العائلية (مع استخدام await)
     const source_number = await generateUniqueSourceNumber(FamilyVisas, {
-        length: 10,
-        prefix: ""
+        length: 8,
     });
 
     // 2. دمج الرقم المولد مع البيانات القادمة من req.body
